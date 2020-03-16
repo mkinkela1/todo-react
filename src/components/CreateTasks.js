@@ -42,12 +42,16 @@ class CreateTask extends Component {
 
   saveChanges() {
 
-    this.setState({showModal: false});
-
     const data = {
       name: this.state.taskName,
       description: this.state.taskDescription
     };
+
+    this.setState({
+      showModal: false,
+      taskName: '',
+      taskDescription: ''
+    });
 
     fetch(`${API_URL}/api/tasks/`, {
       method: 'POST',
