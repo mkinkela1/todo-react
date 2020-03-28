@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 
 import { API_URL } from '../config';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button';
+import Icon from 'react-eva-icons';
 
 class ListTasks extends Component {
 
@@ -25,37 +24,60 @@ class ListTasks extends Component {
       .catch(e => console.log(e))
   }
 
-  deleteTask(id) {
+  deleteTask(e, id) {
     
+    e.preventDefault();   
 
     fetch(`${API_URL}/api/tasks/${id}`, {
       method: 'DELETE'
     })
-      .then(r => r.json())
-      .then(r => console.log(r)
-      )
-      .catch(e => console.log(e))
+      .catch(e => console.log(e));
+
+    const tasks = this.state.tasks.filter(({_id}) => {return _id !== id});
+    this.setState({tasks});
   }
 
   render() {
     
     return (
       <Container className='listTasks'>
-        <ListGroup>
-          {
-            this.state.tasks.map(task => (
-              <ListGroup.Item key={task._id}>
-                <Row>
-                  <Col md={8}>{task.name}</Col>
-                  <Col md={2}>Edit</Col>
-                  <Col md={2}>
-                    <Button variant="danger" onClick={() => this.deleteTask(task._id)}>Delete</Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))
-          }
-        </ListGroup>
+        {
+          this.state.tasks.map(task => (
+            <Card key={task._id}>
+              <Card.Body>
+                <div className='task'>
+                  <div className='item'>
+                    {task.name}
+                  </div>
+                  <div className='item'>
+                    <Button variant='primary' size='sm'>
+                      <Icon 
+                        name="edit-outline"
+                        size="medium"     // small, medium, large, xlarge
+                        animation={{
+                          type: "pulse",  // zoom, pulse, shake, flip
+                          hover: true,
+                          infinite: false 
+                        }}
+                      />
+                    </Button>
+                    <Button variant='primary' size='sm' onClick={(e) => this.deleteTask(e, task._id)}>
+                      <Icon 
+                        name="trash-outline"
+                        size="medium"     // small, medium, large, xlarge
+                        animation={{
+                          type: "pulse",  // zoom, pulse, shake, flip
+                          hover: true,
+                          infinite: false 
+                        }}
+                      />
+                    </Button>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
+          ))
+        }
       </Container>
     );
   }

@@ -1,7 +1,32 @@
+body {
+  background: #efefef;
+}
+
 .App {
   text-align: center;
 
   .listTasks{
     text-align: left;
+
+    .card {
+      margin: 10px;
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+
+      .item {
+        flex: 0 1 auto;
+        font-size: 15px;
+        display: inline-block;
+
+        button {
+          margin: 0 5px;
+
+          &:active {outline: none;}
+        }
+      }
+    }
   }
 }
