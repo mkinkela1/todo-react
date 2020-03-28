@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-import { API_URL } from '../config';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card'
 import Button from 'react-bootstrap/Button';
@@ -11,30 +10,7 @@ class ListTasks extends Component {
   constructor(props) {
     super(props);
     
-    this.state = {
-      tasks: []
-    };
-  }
-
-  componentDidMount() {
-
-    fetch(`${API_URL}/api/tasks`)
-      .then(r => r.json())
-      .then(r => this.setState({ tasks: r }))
-      .catch(e => console.log(e))
-  }
-
-  deleteTask(e, id) {
-    
-    e.preventDefault();   
-
-    fetch(`${API_URL}/api/tasks/${id}`, {
-      method: 'DELETE'
-    })
-      .catch(e => console.log(e));
-
-    const tasks = this.state.tasks.filter(({_id}) => {return _id !== id});
-    this.setState({tasks});
+    this.state = {};
   }
 
   render() {
@@ -42,7 +18,7 @@ class ListTasks extends Component {
     return (
       <Container className='listTasks'>
         {
-          this.state.tasks.map(task => (
+          this.props.tasks.map(task => (
             <Card key={task._id}>
               <Card.Body>
                 <div className='task'>
@@ -61,7 +37,7 @@ class ListTasks extends Component {
                         }}
                       />
                     </Button>
-                    <Button variant='primary' size='sm' onClick={(e) => this.deleteTask(e, task._id)}>
+                    <Button variant='primary' size='sm' onClick={(e) => this.props.deleteTask(e, task._id)}>
                       <Icon 
                         name="trash-outline"
                         size="medium"     // small, medium, large, xlarge

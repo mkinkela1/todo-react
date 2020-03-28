@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form'
-import { API_URL } from '../config';
 
 class CreateTask extends Component {
 
@@ -18,7 +17,6 @@ class CreateTask extends Component {
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHideModal = this.handleHideModal.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.saveChanges = this.saveChanges.bind(this);
   }
 
   handleShowModal() {
@@ -40,32 +38,10 @@ class CreateTask extends Component {
     });
   }
 
-  saveChanges() {
-
-    const data = {
-      name: this.state.taskName,
-      description: this.state.taskDescription
-    };
-
-    this.setState({
-      showModal: false,
-      taskName: '',
-      taskDescription: ''
-    });
-
-    fetch(`${API_URL}/api/tasks/`, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-      .then(r => r.json())
-      .then(r => console.log(r))
-      .catch(e => console.log(e));
-  }
-
   render() {  
+
+    const { taskName, taskDescription } = this.state;
+
     return (
       <div>
         <Button variant="secondary" onClick={this.handleShowModal}>Create Task</Button>
@@ -78,12 +54,12 @@ class CreateTask extends Component {
           <Form>
             <Form.Group controlId="taskName">
               <Form.Label>Task name</Form.Label>
-              <Form.Control type="text" placeholder="Enter task name" required value={this.state.taskName} onChange={e => this.handleChange(e, 'taskName')}/>
+              <Form.Control type="text" placeholder="Enter task name" required value={taskName} onChange={e => this.handleChange(e, 'taskName')}/>
             </Form.Group>
 
             <Form.Group controlId="taskDescription">
               <Form.Label>Task description</Form.Label>
-              <Form.Control as="textarea" rows="3" required value={this.state.taskDescription1} onChange={e => this.handleChange(e, 'taskDescription')}/>
+              <Form.Control as="textarea" rows="3" required value={taskDescription} onChange={e => this.handleChange(e, 'taskDescription')}/>
             </Form.Group>
           </Form>
           </Modal.Body>
@@ -91,7 +67,7 @@ class CreateTask extends Component {
             <Button variant="secondary" onClick={this.handleHideModal}>
               Close
             </Button>
-            <Button variant="primary" onClick={this.saveChanges}>
+            <Button variant="primary" onClick={() => { this.props.createTask(taskName, taskDescription); this.handleHideModal() }}>
               Save Changes
             </Button>
           </Modal.Footer>
