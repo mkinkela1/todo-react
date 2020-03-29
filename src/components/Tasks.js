@@ -69,17 +69,17 @@ class Tasks extends Component {
   render() {
     return (
       <Container>
-          <Row>
-            <Col md={{ span: 6, offset: 3 }}>
-              <ListTasks tasks={this.state.tasks} deleteTask={this.deleteTask}/>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={{ span: 6, offset: 3 }}>
-              <CreateTask createTask={this.createTask} />
-            </Col>
-          </Row>
-        </Container>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <ListTasks tasks={this.state.tasks} deleteTask={this.deleteTask}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={{ span: 6, offset: 3 }}>
+            <CreateTask createTask={this.createTask} />
+          </Col>
+        </Row>
+      </Container>
     );
   }
 }

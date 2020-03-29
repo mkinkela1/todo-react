@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form'
+import Form from 'react-bootstrap/Form';
+
+import ReactQuill from 'react-quill'; 
+import 'react-quill/dist/quill.snow.css'; 
 
 class CreateTask extends Component {
 
@@ -11,12 +14,13 @@ class CreateTask extends Component {
     this.state = {
       showModal: false,
       taskName: '',
-      taskDescription: ''
+      taskDescription: {}
     };
 
     this.handleShowModal = this.handleShowModal.bind(this);
     this.handleHideModal = this.handleHideModal.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleTaskNameChange = this.handleTaskNameChange.bind(this);
+    this.handleEditorStateChange = this.handleEditorStateChange.bind(this);
   }
 
   handleShowModal() {
@@ -27,19 +31,21 @@ class CreateTask extends Component {
     this.setState({showModal: false});
   }
 
-  handleChange(e, key) {
+  handleTaskNameChange(e) {
 
-    e.preventDefault();
-    
     const { value } = e.target;
 
-    this.setState({
-      [key]: value
-    });
+    this.setState({ taskName: value });
+  }
+
+  handleEditorStateChange(taskDescription) {
+    this.setState({ taskDescription });
   }
 
   render() {  
 
+    console.log(this.state);
+    
     const { taskName, taskDescription } = this.state;
 
     return (
@@ -54,12 +60,12 @@ class CreateTask extends Component {
           <Form>
             <Form.Group controlId="taskName">
               <Form.Label>Task name</Form.Label>
-              <Form.Control type="text" placeholder="Enter task name" required value={taskName} onChange={e => this.handleChange(e, 'taskName')}/>
+              <Form.Control type="text" placeholder="Enter task name" required value={taskName} onChange={e => this.handleTaskNameChange(e)}/>
             </Form.Group>
 
             <Form.Group controlId="taskDescription">
               <Form.Label>Task description</Form.Label>
-              <Form.Control as="textarea" rows="3" required value={taskDescription} onChange={e => this.handleChange(e, 'taskDescription')}/>
+              <ReactQuill value={taskDescription} onChange={this.handleEditorStateChange} />
             </Form.Group>
           </Form>
           </Modal.Body>
